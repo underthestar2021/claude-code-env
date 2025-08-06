@@ -8,39 +8,75 @@
 
 本项目是一个 Golang 版本的 Claude Code 启动器，用于快速切换不同的 Claude API 配置。
 
-## 快速开始
+## 🚀 快速开始
 
-### 下载预编译版本（推荐）
+### 1. 使用步骤
 
-前往 [Releases 页面](https://github.com/underthestar2021/claude-code-env/releases/latest) 下载对应平台的预编译版本：
-
-- **macOS Intel**: `cce-darwin-amd64`
-- **macOS Apple Silicon**: `cce-darwin-arm64` 
-- **Linux 64位**: `cce-linux-amd64`
-- **Windows 64位**: `cce-windows-amd64.exe`
-
-下载后重命名为 `cce` 并添加到系统 PATH：
-
+**基本用法**：
 ```bash
-# macOS/Linux 示例
-chmod +x cce-linux-amd64
-sudo mv cce-linux-amd64 /usr/local/bin/cce
+# 启动指定服务配置
+cce service-name
 
-# 或者添加到用户目录
-mv cce-linux-amd64 ~/.local/bin/cce
+# 详细模式（显示执行信息）
+cce -v service-name
 ```
 
-## 功能特性
+**实际运行效果**：
+
+![CCE 详细模式演示](docs/images/cce-verbose-demo.png)
+
+*上图展示了 `cce -v ktyv` 命令的实际运行效果，包括详细的环境变量设置和 Claude Code 的安全提示界面。*
+
+### 2. 配置管理
+
+**自动配置**：
+首次运行时，程序会自动引导您创建配置文件 `~/.claude-code-env/settings.json`
+
+**配置文件格式**：
+```json
+{
+    "service-name1": {
+        "ANTHROPIC_BASE_URL": "https://service1.example.com",
+        "ANTHROPIC_AUTH_TOKEN": "sk-your-token-1"
+    },
+    "service-name2": {
+        "ANTHROPIC_BASE_URL": "https://service2.example.com",
+        "ANTHROPIC_API_KEY": "sk-your-token-2",
+        "ANTHROPIC_MODEL": "claude-3-sonnet"
+    }
+}
+```
+
+### 3. 安装说明
+
+**下载预编译版本**：
+前往 [Releases 页面](https://github.com/underthestar2021/claude-code-env/releases/latest) 下载对应平台版本，重命名为 `cce` 并添加到系统 PATH。
+
+**或构建安装**：
+```bash
+git clone https://github.com/underthestar2021/claude-code-env.git
+cd claude-code-env
+./build.sh  # 构建当前平台版本
+sudo cp dist/cce /usr/local/bin/
+```
+
+---
+
+## 📖 详细文档
+
+### 功能特性
 
 - 🔧 支持多个 Claude API 服务配置
 - 🚀 快速启动不同配置的 Claude Code
 - 📝 自动配置文件创建和管理
 - 🔍 详细模式（verbose）显示执行信息
-- 🎯 支持 shell alias 和环境变量传递
+---
 
-## 安装
+## 📖 详细文档
 
-### 方法1：使用构建脚本（推荐）
+### 完整安装指南
+
+#### 方法1：使用构建脚本（推荐）
 
 1. 确保已安装 Go 1.21 或更高版本
 2. 使用构建脚本编译：
@@ -78,7 +114,7 @@ sudo cp dist/cce-linux-amd64 /usr/local/bin/cce
 cp dist/cce-linux-amd64 ~/.local/bin/cce
 ```
 
-### 方法2：手动编译
+#### 方法2：手动编译
 
 1. 确保已安装 Go 1.21 或更高版本
 2. 直接编译项目：
@@ -97,19 +133,21 @@ GOOS=linux GOARCH=amd64 go build -o cce-linux ./cmd/cce
 sudo cp cce /usr/local/bin/
 ```
 
-## 配置
+### 详细配置说明
 
-### 自动配置
-首次运行时，程序会自动引导您创建配置：
+#### 配置文件位置
+配置文件：`~/.claude-code-env/settings.json`
+
+#### 自动配置创建
+首次运行时，如果配置文件不存在，程序会询问是否创建：
 
 ```bash
 ./cce service-name
 ```
 
-如果配置文件不存在，程序会询问是否创建 `~/.claude-code-env/settings.json`
+程序会询问是否创建 `~/.claude-code-env/settings.json` 配置文件
 
-### 手动配置
-配置文件位置：`~/.claude-code-env/settings.json`
+#### 手动配置
 
 配置文件格式：
 ```json
@@ -126,35 +164,20 @@ sudo cp cce /usr/local/bin/
 }
 ```
 
-## 使用方法
+### 使用方法详解
 
-### 基本用法
+#### 基本用法
 ```bash
 # 使用指定的服务配置启动 Claude Code
 cce service-name
 
 # 查看可用的服务配置
 cce
-```
 
-### 详细模式
-使用 `--verbose` 或 `-v` 参数查看执行详情：
-
-```bash
-# 显示执行的命令和环境变量
+# 详细模式（显示执行的命令和环境变量）
 cce --verbose service-name
 cce -v service-name
 cce service-name -v
-```
-
-详细模式输出示例：
-```
-=== Verbose Mode ===
-执行命令: /bin/zsh -i -c "source ~/.zshrc && claude"
-设置的环境变量:
-  ANTHROPIC_BASE_URL=https://api.example.com
-  ANTHROPIC_AUTH_TOKEN=sk-xxxxxxxxxxxx
-==================
 ```
 
 ## 操作流程
