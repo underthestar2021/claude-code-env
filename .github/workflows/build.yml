@@ -40,9 +40,10 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
+        cache: false  # 禁用缓存，因为我们没有 go.sum 文件
 
     - name: Get dependencies
-      run: go mod tidy
+      run: go mod download
 
     - name: Build
       env:
@@ -138,6 +139,7 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: ${{ env.GO_VERSION }}
+        cache: false  # 禁用缓存，因为我们没有 go.sum 文件
 
     - name: Run tests
       run: go test -v ./...
