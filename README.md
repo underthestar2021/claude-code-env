@@ -25,7 +25,7 @@ cce -v service-name
 
 ![CCE 详细模式演示](docs/images/cce-verbose-demo.png)
 
-*上图展示了 `cce -v ktyv` 命令的实际运行效果，包括详细的环境变量设置和 Claude Code 的安全提示界面。*
+*上图展示了 `cce -v kty` 命令的实际运行效果，包括详细的环境变量设置和 Claude Code 的安全提示界面。*
 
 ### 2. 配置管理
 
