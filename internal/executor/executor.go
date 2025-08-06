@@ -46,14 +46,23 @@ func ExecuteClaudeWithConfig(serviceConfig config.ServiceConfig, verbose bool) e
 	// 执行命令并等待结束
 	err := cmd.Run()
 	
-	// 如果是用户主动退出（Ctrl+C 等），则忽略错误
+	// 处理不同的退出状态
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			// 检查是否是常见的用户退出信号
-			if exitError.ExitCode() == 130 || exitError.ExitCode() == 2 {
-				// 130 是 Ctrl+C，2 是一般的用户中断
+			exitCode := exitError.ExitCode()
+			
+			// 127: 命令未找到 - 需要报告错误
+			if exitCode == 127 {
+				return fmt.Errorf("claude 命令未找到，请确保 Claude Code 已正确安装")
+			}
+			
+			// 1, 2, 130: 用户主动退出 (Ctrl+C, 正常退出等) - 静默处理
+			if exitCode == 1 || exitCode == 2 || exitCode == 130 {
 				return nil
 			}
+			
+			// 其他非零退出码 - 报告错误但提供更友好的信息
+			return fmt.Errorf("claude 命令异常退出 (退出码: %d)", exitCode)
 		}
 	}
 	
